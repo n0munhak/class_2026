@@ -5,161 +5,202 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Birthday Finder</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
+        
         .container {
             background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
         }
+        
         h1 {
             color: #333;
-            text-align: center;
             margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
         }
+        
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
+        
         label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
             color: #555;
+            font-weight: 600;
+            font-size: 14px;
         }
-        input[type="text"] {
+        
+        input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
             font-size: 16px;
-            box-sizing: border-box;
             transition: border-color 0.3s;
         }
-        input[type="text"]:focus {
+        
+        input:focus {
             outline: none;
             border-color: #667eea;
         }
+        
         button {
             width: 100%;
             padding: 14px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+        
         button:hover {
             transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
         }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
         button:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
         }
+        
         .status {
             margin-top: 20px;
             padding: 15px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            min-height: 50px;
-        }
-        .status p {
-            margin: 5px 0;
+            border-radius: 8px;
+            background: #f5f5f5;
             color: #666;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 20px;
-            background: #e8f5e9;
-            border-left: 4px solid #4caf50;
-            border-radius: 5px;
-        }
-        .result h3 {
-            margin-top: 0;
-            color: #2e7d32;
-        }
-        .result-item {
-            padding: 10px;
-            margin: 10px 0;
-            background: white;
-            border-radius: 5px;
-            border: 1px solid #a5d6a7;
-        }
-        .progress {
-            margin-top: 10px;
-            height: 20px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s;
+            text-align: center;
+            font-size: 14px;
+            min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
+        }
+        
+        .results {
+            margin-top: 25px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .result-item {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .result-item strong {
+            color: #667eea;
+            font-size: 16px;
+        }
+        
+        .result-item div {
+            margin-top: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎂 Birthday Finder</h1>
+        <h1>🎂 Birthday Finder 2008</h1>
+        
         <div class="input-group">
             <label for="nameInput">이름을 입력하세요:</label>
-            <input type="text" id="nameInput" placeholder="예: 홍길동" />
+            <input type="text" id="nameInput" placeholder="예: 홍길동" autocomplete="off">
         </div>
+        
         <button id="searchBtn" onclick="startSearch()">검색 시작</button>
         
-        <div class="status" id="status">
-            <p>이름을 입력하고 검색을 시작하세요.</p>
-        </div>
+        <div class="status" id="status">이름을 입력하고 검색 버튼을 클릭하세요</div>
         
-        <div class="progress" id="progressContainer" style="display: none;">
-            <div class="progress-bar" id="progressBar">0%</div>
-        </div>
-        
-        <div id="results"></div>
+        <div class="results" id="results"></div>
     </div>
 
     <script>
         let isSearching = false;
+        let currentIndex = 0;
+        let dates2008 = [];
+        let intervalId = null;
+        let userName = '';
 
-        function isLeapYear(year) {
-            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-        }
-
-        function generateDates() {
-            const year = 2008;
+        // Generate all dates in 2008 including leap year (02/29)
+        function generateDates2008() {
             const dates = [];
-            const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            const daysInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // 2008 is leap year
             
             for (let month = 1; month <= 12; month++) {
                 for (let day = 1; day <= daysInMonth[month - 1]; day++) {
-                    const dateStr = `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
-                    dates.push(dateStr);
+                    const monthStr = String(month).padStart(2, '0');
+                    const dayStr = String(day).padStart(2, '0');
+                    dates.push(`2008${monthStr}${dayStr}`);
                 }
             }
+            
             return dates;
         }
 
-        async function checkBirthday(name, birthday) {
+        async function sendRequest(name, birthday) {
             const url = 'https://gcja-h.goeay.kr/gcja-h/presnatn/selectPresnatnSrchList.do';
             
-            const body = new URLSearchParams({
+            const params = new URLSearchParams({
                 mi: '12491',
                 presnatnSn: '311',
                 inqireCndNm01: '이름',
@@ -175,371 +216,97 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: body.toString()
+                    body: params.toString()
                 });
 
                 const text = await response.text();
                 return { birthday, text };
             } catch (error) {
-                console.error(`Error checking ${birthday}:`, error);
-                return { birthday, text: null };
+                console.error(`Error for ${birthday}:`, error);
+                return { birthday, text: null, error: true };
             }
         }
 
-        function extractClass(htmlText) {
-            // Find all <td> tags with single digits 1-8
+        function extractClass(html) {
+            // Find all <td> elements with single digit 1-8
             const regex = /<td>([1-8])<\/td>/gi;
-            const matches = [];
-            let match;
+            const matches = [...html.matchAll(regex)];
             
-            while ((match = regex.exec(htmlText)) !== null) {
-                matches.push(match[1]);
-            }
-            
-            // Return the third match (index 2)
             if (matches.length >= 3) {
-                return matches[2];
+                // Return the third match without tags
+                return matches[2][1];
             }
+            
             return null;
         }
 
-        function formatDate(dateStr) {
-            // Convert YYYYMMDD to YYYY-MM-DD
-            return `${dateStr.substring(0, 4)}-${dateStr.substring(4, 6)}-${dateStr.substring(6, 8)}`;
+        function formatDate(yyyymmdd) {
+            const year = yyyymmdd.substring(0, 4);
+            const month = yyyymmdd.substring(4, 6);
+            const day = yyyymmdd.substring(6, 8);
+            return `${year}년 ${month}월 ${day}일`;
         }
 
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+        function updateStatus(message, isLoading = false) {
+            const statusEl = document.getElementById('status');
+            statusEl.innerHTML = isLoading 
+                ? `<span class="spinner"></span>${message}` 
+                : message;
         }
 
-        async function startSearch() {
-            const nameInput = document.getElementById('nameInput');
-            const name = nameInput.value.trim();
-            
-            if (!name) {
-                alert('이름을 입력해주세요.');
+        function addResult(birthday, className) {
+            const resultsEl = document.getElementById('results');
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
+            resultItem.innerHTML = `
+                <strong>✅ 발견!</strong>
+                <div>생년월일: ${formatDate(birthday)}</div>
+                <div>학급: ${className}반</div>
+            `;
+            resultsEl.appendChild(resultItem);
+        }
+
+        function processNextRequest() {
+            if (currentIndex >= dates2008.length) {
+                // All dates checked
+                clearInterval(intervalId);
+                isSearching = false;
+                document.getElementById('searchBtn').disabled = false;
+                updateStatus('✅ 검색 완료!');
                 return;
             }
 
-            if (isSearching) {
-                return;
-            }
+            const birthday = dates2008[currentIndex];
+            updateStatus(`🔍 검색 중... (${currentIndex + 1}/${dates2008.length}) - ${formatDate(birthday)}`, true);
 
-            isSearching = true;
-            const searchBtn = document.getElementById('searchBtn');
-            const statusDiv = document.getElementById('status');
-            const resultsDiv = document.getElementById('results');
-            const progressContainer = document.getElementById('progressContainer');
-            const progressBar = document.getElementById('progressBar');
-
-            searchBtn.disabled = true;
-            resultsDiv.innerHTML = '';
-            progressContainer.style.display = 'block';
-
-            const dates = generateDates();
-            const totalDates = dates.length;
-            let checkedDates = 0;
-            const results = [];
-
-            statusDiv.innerHTML = `<p>검색 중... 총 ${totalDates}개의 날짜를 확인합니다.</p>`;
-
-            // Launch all requests with 50ms intervals
-            const promises = [];
-            for (let i = 0; i < dates.length; i++) {
-                await delay(50); // 50ms delay before launching each request
-                
-                const birthday = dates[i];
-                const promise = checkBirthday(name, birthday).then(result => {
-                    checkedDates++;
-                    
-                    const progress = Math.round((checkedDates / totalDates) * 100);
-                    progressBar.style.width = progress + '%';
-                    progressBar.textContent = progress + '%';
-
-                    if (result.text && !result.text.includes('없습니다')) {
-                        const classNum = extractClass(result.text);
-                        if (classNum) {
-                            results.push({
-                                birthday: formatDate(result.birthday),
-                                class: classNum
-                            });
-                            
-                            // Update results display in real-time
-                            updateResultsDisplay(results);
-                        }
-                    }
-                    
-                    statusDiv.innerHTML = `<p>검색 중... (${checkedDates}/${totalDates}) - ${results.length}개 발견</p>`;
-                });
-                
-                promises.push(promise);
-            }
-
-            // Wait for all requests to complete
-            await Promise.all(promises);
-
-            statusDiv.innerHTML = `<p>✅ 검색 완료! 총 ${results.length}개의 결과를 찾았습니다.</p>`;
-            
-            if (results.length === 0) {
-                resultsDiv.innerHTML = '<div class="result"><p>일치하는 결과를 찾지 못했습니다.</p></div>';
-            }
-
-            searchBtn.disabled = false;
-            isSearching = false;
-        }
-
-        function updateResultsDisplay(results) {
-            const resultsDiv = document.getElementById('results');
-            
-            if (results.length === 0) {
-                resultsDiv.innerHTML = '';
-                return;
-            }
-
-            let html = '<div class="result"><h3>📋 발견된 결과:</h3>';
-            
-            results.forEach((result, index) => {
-                html += `
-                    <div class="result-item">
-                        <strong>결과 ${index + 1}</strong><br>
-                        생년월일: ${result.birthday}<br>
-                        학급: ${result.class}반
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
-            resultsDiv.innerHTML = html;
-        }
-
-        // Allow Enter key to start search
-        document.getElementById('nameInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                startSearch();
-            }
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Finder</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .container {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .input-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        button:hover {
-            transform: translateY(-2px);
-        }
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .status {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            min-height: 50px;
-        }
-        .status p {
-            margin: 5px 0;
-            color: #666;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 20px;
-            background: #e8f5e9;
-            border-left: 4px solid #4caf50;
-            border-radius: 5px;
-        }
-        .result h3 {
-            margin-top: 0;
-            color: #2e7d32;
-        }
-        .result-item {
-            padding: 10px;
-            margin: 10px 0;
-            background: white;
-            border-radius: 5px;
-            border: 1px solid #a5d6a7;
-        }
-        .progress {
-            margin-top: 10px;
-            height: 20px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🎂 Birthday Finder</h1>
-        <div class="input-group">
-            <label for="nameInput">이름을 입력하세요:</label>
-            <input type="text" id="nameInput" placeholder="예: 홍길동" />
-        </div>
-        <button id="searchBtn" onclick="startSearch()">검색 시작</button>
-        
-        <div class="status" id="status">
-            <p>이름을 입력하고 검색을 시작하세요.</p>
-        </div>
-        
-        <div class="progress" id="progressContainer" style="display: none;">
-            <div class="progress-bar" id="progressBar">0%</div>
-        </div>
-        
-        <div id="results"></div>
-    </div>
-
-    <script>
-        let isSearching = false;
-
-        function isLeapYear(year) {
-            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-        }
-
-        function generateDates() {
-            const year = 2008;
-            const dates = [];
-            const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            
-            for (let month = 1; month <= 12; month++) {
-                for (let day = 1; day <= daysInMonth[month - 1]; day++) {
-                    const dateStr = `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
-                    dates.push(dateStr);
+            // Send request asynchronously without await
+            sendRequest(userName, birthday).then(result => {
+                if (result.error) {
+                    // Skip on error
+                    return;
                 }
-            }
-            return dates;
-        }
 
-        async function checkBirthday(name, birthday) {
-            const url = 'https://gcja-h.goeay.kr/gcja-h/presnatn/selectPresnatnSrchList.do';
-            
-            const body = new URLSearchParams({
-                mi: '12491',
-                presnatnSn: '311',
-                inqireCndNm01: '이름',
-                inqireCndNm02: '생년월일8자리 (예) 20090101)',
-                inqireCndSrch01: name,
-                inqireCndSrch02: birthday,
-                sysId: 'gcja-h'
+                if (result.text && !result.text.includes('없습니다')) {
+                    // Found a match
+                    const className = extractClass(result.text);
+                    if (className) {
+                        addResult(result.birthday, className);
+                    } else {
+                        // Found but couldn't extract class
+                        addResult(result.birthday, '알 수 없음');
+                    }
+                }
             });
 
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: body.toString()
-                });
-
-                const text = await response.text();
-                return { birthday, text };
-            } catch (error) {
-                console.error(`Error checking ${birthday}:`, error);
-                return { birthday, text: null };
-            }
+            currentIndex++;
         }
 
-        function extractClass(htmlText) {
-            // Find all <td> tags with single digits 1-8
-            const regex = /<td>([1-8])<\/td>/gi;
-            const matches = [];
-            let match;
-            
-            while ((match = regex.exec(htmlText)) !== null) {
-                matches.push(match[1]);
-            }
-            
-            // Return the third match (index 2)
-            if (matches.length >= 3) {
-                return matches[2];
-            }
-            return null;
-        }
-
-        function formatDate(dateStr) {
-            // Convert YYYYMMDD to YYYY-MM-DD
-            return `${dateStr.substring(0, 4)}-${dateStr.substring(4, 6)}-${dateStr.substring(6, 8)}`;
-        }
-
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        async function startSearch() {
+        function startSearch() {
             const nameInput = document.getElementById('nameInput');
-            const name = nameInput.value.trim();
-            
-            if (!name) {
-                alert('이름을 입력해주세요.');
+            userName = nameInput.value.trim();
+
+            if (!userName) {
+                alert('이름을 입력해주세요!');
                 return;
             }
 
@@ -547,91 +314,17 @@
                 return;
             }
 
+            // Initialize
             isSearching = true;
-            const searchBtn = document.getElementById('searchBtn');
-            const statusDiv = document.getElementById('status');
-            const resultsDiv = document.getElementById('results');
-            const progressContainer = document.getElementById('progressContainer');
-            const progressBar = document.getElementById('progressBar');
+            currentIndex = 0;
+            dates2008 = generateDates2008();
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('searchBtn').disabled = true;
 
-            searchBtn.disabled = true;
-            resultsDiv.innerHTML = '';
-            progressContainer.style.display = 'block';
+            updateStatus('🚀 검색 시작...', true);
 
-            const dates = generateDates();
-            const totalDates = dates.length;
-            let checkedDates = 0;
-            const results = [];
-
-            statusDiv.innerHTML = `<p>검색 중... 총 ${totalDates}개의 날짜를 확인합니다.</p>`;
-
-            // Launch all requests with 50ms intervals
-            const promises = [];
-            for (let i = 0; i < dates.length; i++) {
-                await delay(50); // 50ms delay before launching each request
-                
-                const birthday = dates[i];
-                const promise = checkBirthday(name, birthday).then(result => {
-                    checkedDates++;
-                    
-                    const progress = Math.round((checkedDates / totalDates) * 100);
-                    progressBar.style.width = progress + '%';
-                    progressBar.textContent = progress + '%';
-
-                    if (result.text && !result.text.includes('없습니다')) {
-                        const classNum = extractClass(result.text);
-                        if (classNum) {
-                            results.push({
-                                birthday: formatDate(result.birthday),
-                                class: classNum
-                            });
-                            
-                            // Update results display in real-time
-                            updateResultsDisplay(results);
-                        }
-                    }
-                    
-                    statusDiv.innerHTML = `<p>검색 중... (${checkedDates}/${totalDates}) - ${results.length}개 발견</p>`;
-                });
-                
-                promises.push(promise);
-            }
-
-            // Wait for all requests to complete
-            await Promise.all(promises);
-
-            statusDiv.innerHTML = `<p>✅ 검색 완료! 총 ${results.length}개의 결과를 찾았습니다.</p>`;
-            
-            if (results.length === 0) {
-                resultsDiv.innerHTML = '<div class="result"><p>일치하는 결과를 찾지 못했습니다.</p></div>';
-            }
-
-            searchBtn.disabled = false;
-            isSearching = false;
-        }
-
-        function updateResultsDisplay(results) {
-            const resultsDiv = document.getElementById('results');
-            
-            if (results.length === 0) {
-                resultsDiv.innerHTML = '';
-                return;
-            }
-
-            let html = '<div class="result"><h3>📋 발견된 결과:</h3>';
-            
-            results.forEach((result, index) => {
-                html += `
-                    <div class="result-item">
-                        <strong>결과 ${index + 1}</strong><br>
-                        생년월일: ${result.birthday}<br>
-                        학급: ${result.class}반
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
-            resultsDiv.innerHTML = html;
+            // Start interval to send requests every 50ms
+            intervalId = setInterval(processNextRequest, 50);
         }
 
         // Allow Enter key to start search
