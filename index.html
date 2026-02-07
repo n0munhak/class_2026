@@ -199,14 +199,24 @@
 
         async function sendRequest(name, birthday) {
             const url = 'https://newclass.mswgen.workers.dev/corsproxy';
+
+             const params = new URLSearchParams({
+                mi: '12491',
+                presnatnSn: '311',
+                inqireCndNm01: '이름',
+                inqireCndNm02: '생년월일8자리 (예) 20090101)',
+                inqireCndSrch01: name,
+                inqireCndSrch02: birthday,
+                sysId: 'gcja-h'
+            });
             
             try {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: JSON.stringify({ name, birthday })
+                    body: params.toString()
                 });
 
                 const text = await response.text();
